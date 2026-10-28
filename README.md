@@ -76,16 +76,8 @@ index.html          Single-page UI (Bootstrap 4 + local styling)
 css/style.css       Dark-theme stylesheet (workspace sidebar, grid, controls)
 css/reset.css       Eric Meyer's public-domain CSS reset
 js/app.js           All app logic: URL parsing, Giphy API, grid, selection, ZIP
-tests/app.test.js   Lightweight logic checks (URL parsing, request guarding)
 img/                App imagery
-package.json        Project metadata + `npm test` entry point
-```
-
-## Development checks
-
-```sh
-node --test tests/app.test.js
-# or: npm test
+package.json        Project metadata (name, author, repository links)
 ```
 
 ## Not supported

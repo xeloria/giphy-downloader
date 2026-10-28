@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Dark-themed single-page web app for searching Giphy, browsing profiles, copying direct GIF links, and downloading GIFs/Stickers individually or as a ZIP.",
   "private": true,
-  "scripts": {
-    "test": "node --test tests/app.test.js"
-  },
   "keywords": [
     "giphy",
     "gif",
