@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport"
+		  content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Author -->
+	<meta name="author" content="Xeloria">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet"
+		  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+		  crossorigin="anonymous">
+
+	<link rel="stylesheet"
+		  href="css/style.css">
+
+	<title>Giphy Downloader</title>
+</head>
+
+<body>
+	<div class="app-shell">
+	<div class="alert alert-success alert-dismissible fade"
+		 role="alert" id="copy-alert">
+		Link copied successfully!
+		<button type="button"
+				class="close"
+				data-dismiss="alert"
+				aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="alert alert-info alert-dismissible fade" role="alert" id="status-alert" style="display:none;">
+		<span id="status-alert-text"></span>
+		<button type="button" class="close" onclick="$('#status-alert').removeClass('show').hide();">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<header class="app-header">
+		<img src="img/giphy.gif" alt="Giphy Downloader">
+		<p class="header-subtitle">Search, paste, select, download.</p>
+	</header>
+	<div class="app-workspace">
+		<aside class="app-sidebar" aria-label="Workspace shortcuts">
+			<p class="sidebar-label">Find GIFs</p>
+			<section class="input">
+				<div class="input-group">
+					<input id="giphyLink"
+						   class="form-control"
+						   aria-label="Search GIFs or paste a Giphy link"
+						   aria-describedby="button-addon4"
+						   placeholder="Search GIFs"
+						   type="text"
+						   name="gifpath">
+					<div class="input-group-append"
+						 id="button-addon4">
+						<button class="btn btn-outline-primary"
+								id="clear-input"
+								aria-label="Clear search"
+								type="button">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				</div>
+				<small class="input-hint">Type a search, paste a Giphy GIF link, or use a profile URL / <code>@username</code>.</small>
+
+				<div class="api-key-row">
+					<a class="btn btn-sm btn-link api-toggle" data-toggle="collapse" href="#apiKeyCollapse" role="button" aria-expanded="false" aria-controls="apiKeyCollapse">
+						API Key settings
+					</a>
+					<div class="collapse" id="apiKeyCollapse">
+						<div class="card card-body api-key-card">
+							<label for="apiKeyInput" class="api-key-label">Giphy API Key <a href="https://developers.giphy.com/dashboard/" target="_blank" rel="noopener">(get one free)</a></label>
+							<div class="input-group input-group-sm">
+								<input type="text" id="apiKeyInput" class="form-control" placeholder="Enter your Giphy API key">
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary" type="button" id="saveApiKey">Save</button>
+									<button class="btn btn-outline-danger" type="button" id="resetApiKey">Reset</button>
+								</div>
+							</div>
+							<small class="text-muted api-key-help">Defaults to a public demo key. Your key is stored locally only.</small>
+							<small id="apiKeyStatus" class="api-key-status"></small>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section id="single-gif-section">
+				<input id="direct-gif-link" type="text" readonly>
+				<div class="single-gif-actions">
+					<button type="button" class="btn btn-primary" id="copy">Copy GIF link</button>
+					<a id="download-single" class="btn btn-success" href="#" download target="_blank">Download GIF</a>
+				</div>
+			</section>
+		</aside>
+		<div class="container app-content">
+		<!-- User / Channel bulk view -->
+		<section id="user-gifs-section" style="display:none;">
+			<div id="user-header">
+				<h3 id="user-title"></h3>
+				<p id="user-subtitle" class="text-muted"></p>
+				<p id="user-status" class="user-status"></p>
+			</div>
+
+			<div id="user-controls" class="user-controls">
+				<div class="controls-left">
+					<div id="content-filter" class="content-filter btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-outline-light active" data-filter="all" id="filter-all">All <span class="badge badge-light" id="count-all">0</span></button>
+						<button type="button" class="btn btn-outline-light" data-filter="gifs" id="filter-gifs">GIFs <span class="badge badge-light" id="count-gifs">0</span></button>
+						<button type="button" class="btn btn-outline-light" data-filter="stickers" id="filter-stickers">Stickers <span class="badge badge-light" id="count-stickers">0</span></button>
+					</div>
+					<button type="button" class="btn btn-sm btn-outline-light" id="select-all">Select All Visible</button>
+					<button type="button" class="btn btn-sm btn-outline-light" id="deselect-all">Deselect All</button>
+					<span id="selection-count" class="selection-count">0 selected / 0 visible</span>
+					<span id="total-count" class="total-count"></span>
+				</div>
+				<div class="controls-right">
+					<button type="button" class="btn btn-sm btn-warning" id="download-selected" disabled title="Select GIFs/Stickers first via checkboxes or Select All">Download Selected as ZIP (0)</button>
+					<button type="button" class="btn btn-sm btn-success" id="download-all" disabled>Download All as ZIP</button>
+				</div>
+			</div>
+
+			<div id="zip-progress" class="zip-progress" style="display:none;">
+				<div class="progress">
+					<div id="zip-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">0%</div>
+				</div>
+				<small id="zip-progress-text" class="zip-progress-text"></small>
+			</div>
+
+			<div id="gifs-grid" class="gifs-grid"></div>
+
+			<div class="load-more-wrap">
+				<button type="button" class="btn btn-outline-primary" id="load-more" style="display:none;">Load More</button>
+				<small id="load-more-hint" class="text-muted" style="display:block; margin-top:8px;"></small>
+			</div>
+		</section>
+
+		<section id="status-section">
+			<p id="status-message" class="status-message"></p>
+		</section>
+		</div>
+	</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+			crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+			integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+			crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+			crossorigin="anonymous"></script>
+	<!-- JSZip + FileSaver for ZIP downloads -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+	<script src="js/app.js"></script>
+	</div>
+</body>
+
+</html>

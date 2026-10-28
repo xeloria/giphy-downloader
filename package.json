@@ -1,0 +1,30 @@
+{
+  "name": "giphy-downloader",
+  "version": "1.0.0",
+  "description": "Dark-themed single-page web app for searching Giphy, browsing profiles, copying direct GIF links, and downloading GIFs/Stickers individually or as a ZIP.",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/app.test.js"
+  },
+  "keywords": [
+    "giphy",
+    "gif",
+    "stickers",
+    "downloader",
+    "zip",
+    "vanilla-js"
+  ],
+  "author": "Xeloria (https://github.com/xeloria)",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xeloria/giphy-downloader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xeloria/giphy-downloader/issues"
+  },
+  "homepage": "https://github.com/xeloria/giphy-downloader#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}

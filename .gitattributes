@@ -1,0 +1,5 @@
+# Normalize line endings for text files; keep media binary.
+* text=auto
+*.gif binary
+*.png binary
+*.jpg binary

@@ -1,0 +1,498 @@
+/*
+ * Giphy Downloader — stylesheet
+ * Author: Xeloria (https://github.com/xeloria)
+ */
+
+/* ------------------------------------------------------------------ *
+ * Design tokens
+ * ------------------------------------------------------------------ */
+:root {
+    --bg: #101012;
+    --surface: #1d1e24;
+    --surface-input: #202129;
+    --surface-input-alt: #272932;
+    --surface-control: #292b34;
+    --surface-active: #2e3140;
+    --border: #2c2d35;
+    --border-strong: #353741;
+    --border-input: #41434e;
+    --border-card: #30323b;
+    --border-hover: #515563;
+    --border-control: #454752;
+
+    --text: #f5f5f7;
+    --text-bright: #ffffff;
+    --text-title: #f4f4f6;
+    --text-soft: #c7c9d1;
+    --text-dim: #a4a7b3;
+    --text-faint: #858895;
+    --text-faint-2: #777a87;
+
+    --accent: #6f63e8;
+    --selection: #31d7a1;
+    --green: #31b98d;
+    --green-focus: rgba(49, 215, 161, 0.18);
+    --green-ring: rgba(49, 215, 161, 0.2);
+    --amber: #e0af32;
+    --danger: #ff6b6b;
+    --on-amber: #1c1b16;
+
+    --badge-bg: #dddee5;
+    --badge-fg: #252630;
+    --sticker-badge: rgba(255, 102, 102, 0.85);
+
+    --radius-sm: 5px;
+    --radius-md: 7px;
+    --radius-lg: 9px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+html, body {
+    width: 100%;
+    min-height: 100%;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: Inter, "Segoe UI", Roboto, sans-serif;
+}
+section { text-align: center; }
+
+/* Only these two paragraphs intentionally keep extra top spacing. */
+.user-status,
+.status-message { margin-top: 20px; }
+
+.text-muted { color: var(--text-faint) !important; }
+
+/* Toast-style alerts (copy feedback, info boxes). */
+.alert {
+    width: 400px;
+    max-width: 90%;
+    right: 30px;
+    position: fixed;
+    top: 30px;
+    z-index: 1050;
+}
+.status-message {
+    color: var(--danger);
+    font-size: 0.9em;
+}
+
+/* ------------------------------------------------------------------ *
+ * App shell: header, sidebar rail, content pane
+ * ------------------------------------------------------------------ */
+.app-shell {
+    min-height: 100vh;
+    background: radial-gradient(circle at 80% -20%, rgba(61, 74, 104, 0.28), transparent 34%), var(--bg);
+}
+.app-header {
+    height: 120px;
+    padding: 0 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.app-header img {
+    display: block;
+    width: auto;
+    height: 100px;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    max-width: 260px;
+    margin: 0;
+}
+.app-header .header-subtitle {
+    margin: 0;
+    color: #888b98;
+    font-size: 0.84em;
+}
+
+.app-workspace {
+    display: flex;
+    min-height: calc(100vh - 120px);
+}
+.app-sidebar {
+    flex: 0 0 310px;
+    padding: 30px 22px;
+    border-right: 1px solid var(--border);
+}
+.sidebar-label {
+    margin: 0 10px 10px;
+    color: #737682;
+    font-size: 0.68em;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.app-content {
+    flex: 1;
+    max-width: none;
+    padding: 32px 34px 56px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Search input, API key rail
+ * ------------------------------------------------------------------ */
+.app-sidebar .input { padding: 0; }
+.input .input-group {
+    max-width: 800px;
+    width: 100%;
+}
+#giphyLink {
+    height: 46px;
+    border: 1px solid var(--border-input);
+    border-right: 0;
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+    background: var(--surface-input);
+    color: var(--text);
+    font-size: 0.9em;
+}
+#giphyLink::placeholder { color: #858896; }
+#giphyLink:focus {
+    box-shadow: 0 0 0 3px var(--green-focus);
+    border-color: var(--selection);
+}
+#clear-input {
+    min-width: 52px;
+    border-color: var(--border-input);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    background: var(--surface-control);
+    color: #aeb1bd;
+}
+#clear-input:hover { background: #363844; color: var(--text-bright); }
+
+.input-hint {
+    display: block;
+    margin-top: 8px;
+    color: var(--text-faint-2);
+    font-size: 0.8em;
+    line-height: 1.55;
+}
+.input-hint code {
+    color: #c8cad2;
+    background: var(--surface-input-alt);
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+.api-key-row {
+    margin-top: 16px;
+    text-align: left;
+}
+.api-toggle {
+    color: #8a8d9a !important;
+    font-size: 0.85em;
+    padding-left: 0;
+    text-decoration: none !important;
+}
+.api-toggle:hover { color: var(--selection) !important; }
+.api-key-card {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    margin-top: 8px;
+    padding: 12px;
+    text-align: left;
+}
+.api-key-card .form-control {
+    background: var(--surface-input-alt);
+    border-color: #444651;
+    color: #fff;
+}
+.api-key-label {
+    font-size: 0.85em;
+    margin-bottom: 6px;
+    display: block;
+}
+.api-key-help {
+    margin-top: 6px;
+    display: block;
+}
+.api-key-status {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.8em;
+}
+.api-key-status.success { color: #28a745; }
+.api-key-status.error { color: #dc3545; }
+
+/* Hidden-but-functional direct link input (used by copy + clipboard fallback). */
+#direct-gif-link {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Single GIF view
+ * ------------------------------------------------------------------ */
+#single-gif-section {
+    padding: 20px 0 0;
+    text-align: left;
+}
+.single-gif-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.single-gif-actions #download-single { margin-left: 0 !important; }
+.single-gif-actions .btn { font-size: 0.82em; }
+
+/* Shared geometry for action buttons. */
+#single-gif-section .btn,
+.controls-right .btn,
+.controls-left .btn {
+    border-radius: var(--radius-md);
+    font-weight: 600;
+}
+#copy { background: var(--accent); border-color: var(--accent); }
+#download-single, #download-all { background: var(--green); border-color: var(--green); }
+#download-selected {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--on-amber);
+}
+
+/* ------------------------------------------------------------------ *
+ * User / profile view: header + controls bar
+ * ------------------------------------------------------------------ */
+#user-gifs-section {
+    text-align: left;
+    padding: 4px 0 40px;
+    max-width: none;
+}
+#user-header {
+    text-align: left;
+    margin-bottom: 10px;
+}
+#user-title {
+    font-size: 1.55em;
+    color: var(--text-title);
+    margin-bottom: 4px;
+}
+#user-subtitle {
+    font-size: 0.9em;
+    margin-top: 0;
+}
+.user-status {
+    font-size: 0.9em;
+    min-height: 1.2em;
+    text-align: left;
+}
+
+.user-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    padding: 10px 14px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 12px;
+}
+.controls-left, .controls-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.selection-count, .total-count {
+    font-size: 0.85em;
+    color: var(--text-dim);
+    margin-left: 8px;
+}
+
+/* Filter tabs sit at the head of the controls row, separated by a divider. */
+.content-filter {
+    margin: 0;
+    display: inline-flex;
+    padding-right: 12px;
+    border-right: 1px solid var(--border-strong);
+}
+.content-filter .btn { font-size: 0.85em; }
+.content-filter .btn {
+    border-color: var(--border-control);
+    color: #bbbfc9;
+}
+.content-filter .btn.active {
+    background: var(--surface-active);
+    border-color: var(--accent);
+    color: #fff;
+}
+.content-filter .badge {
+    margin-left: 6px;
+    font-size: 0.75em;
+    background: var(--badge-bg);
+    color: var(--badge-fg);
+}
+
+/* ------------------------------------------------------------------ *
+ * ZIP progress
+ * ------------------------------------------------------------------ */
+.zip-progress { margin-bottom: 16px; }
+.zip-progress .progress {
+    height: 20px;
+    background: var(--surface-control);
+}
+.zip-progress .progress-bar { background: var(--green); }
+.zip-progress-text {
+    display: block;
+    margin-top: 6px;
+    color: #aaa;
+    text-align: center;
+}
+
+/* ------------------------------------------------------------------ *
+ * Result grid + cards
+ * ------------------------------------------------------------------ */
+.gifs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.gif-card {
+    background: var(--surface);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s, transform 0.15s;
+    position: relative;
+}
+.gif-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+}
+.gif-card.selected {
+    border-color: var(--selection);
+    box-shadow: 0 0 0 2px var(--green-ring);
+}
+.gif-card-img-wrap {
+    position: relative;
+    background: #111;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+}
+.gif-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.gif-card-img-wrap img.is-sticker {
+    object-fit: contain;
+    background: #111;
+    padding: 8px;
+}
+.gif-card-checkbox {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 20px;
+    height: 20px;
+    accent-color: #007bff;
+    z-index: 2;
+    cursor: pointer;
+}
+.gif-card-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 0.7em;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+.gif-card-badge.sticker { background: var(--sticker-badge); }
+.gif-card-body {
+    padding: 9px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.gif-card-title {
+    font-size: 0.8em;
+    color: var(--text-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+.gif-card-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.gif-card-actions .btn {
+    flex: 1;
+    font-size: 0.75em;
+    padding: 4px 6px;
+    white-space: nowrap;
+    border-radius: var(--radius-sm);
+}
+.gif-card-actions .btn-copy { flex: 0 0 auto; }
+.gif-card-actions .btn-download { background: var(--green); border-color: var(--green); }
+
+/* ------------------------------------------------------------------ *
+ * Footer area (infinite-scroll state hint)
+ * ------------------------------------------------------------------ */
+.load-more-wrap {
+    text-align: center;
+    margin-top: 20px;
+}
+/* The old Load More button was replaced by automatic infinite scroll. */
+#load-more { display: none; }
+
+/* ------------------------------------------------------------------ *
+ * Responsive
+ * ------------------------------------------------------------------ */
+@media (max-width: 850px) {
+    .app-sidebar { flex-basis: 260px; padding: 25px 16px; }
+    .app-content { padding: 30px 22px 48px; }
+}
+@media (max-width: 768px) {
+    .gifs-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+    }
+    .user-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .controls-left, .controls-right { justify-content: center; }
+}
+@media (max-width: 680px) {
+    .app-header { height: auto; min-height: 62px; padding: 10px 17px; }
+    .app-header img { height: 40px; }
+    .app-header .header-subtitle { display: none; }
+    .app-workspace { display: block; }
+    .app-sidebar {
+        display: block;
+        overflow: visible;
+        padding: 21px 15px;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+    .sidebar-label { display: block; }
+    .app-content { padding: 24px 15px 38px; }
+    .input .input-group { max-width: none; }
+    .user-controls { padding: 12px; }
+}
+@media (max-width: 480px) {
+    .gifs-grid { grid-template-columns: repeat(2, 1fr); }
+}
